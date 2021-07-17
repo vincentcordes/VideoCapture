@@ -1,0 +1,84 @@
+body{
+  margin: 0;
+}
+
+.main-container{
+  width: 100vw;
+  height: 100vh;
+}
+
+/* remove later */
+/* used for initial styling */
+.box{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgb(233, 75, 70);
+  z-index: -1;
+}
+
+button{
+    cursor: pointer;
+    outline: none;
+    width: 120px;
+    height: 40px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 800;
+    font-size: 16px;
+    color: white;
+    filter: brightness(95%);
+    
+    border: none;
+    border-radius: 10px;
+    /* horizontal offset : vertical offset : blur : spread : color*/
+    box-shadow: 3px 3px 8px 1px rgba(0,0,0, .2);
+  }
+.button-show-hide{
+  width: 50px;
+
+}
+.button-select{
+  background: rgb(56, 209, 236);
+} 
+.button-start{
+    background: #33ee52;
+}
+.button-stop{
+    background: #e74a2e;
+}  
+button:hover{
+    filter: brightness(100%);
+  }
+  
+button:active{
+  transform: translate(1px, 1px);
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.048);
+}
+
+.controls-container{
+  /* position container at bottom of window */
+  z-index: 0;
+  margin: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+  /* position elements inside container */
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 30px; 
+  
+  /* container styling */
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, .3);
+  box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.288);
+  
+}
+.hide{
+  visibility: collapse;
+}
+.collapse-control-bar{
+
+  /* visibility: collapse; */
+}

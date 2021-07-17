@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Video Capture</title>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="box">
+            <!-- <video src=""> -->
+        </div>
+        <div class="controls-container  " id="controls-container">
+            <button class="button-show-hide">Hide</button>
+            <button class="button-select " id="btn1">Select Window</button>
+            <button class="button-start " id="button-start">Record</button>
+            <button class="button-stop " id="button-stop">Stop</button>
+
+            <button class="button-stop ">Other Stuff</button>
+            <button class="button-stop ">Other Stuff</button>
+            <button class="button-stop ">Popup Window</button>
+        </div>
+
+    </div>
+    <script>
+        const collapse = 'collapse-control-bar';
+        const btn = document.getElementById('btn1');
+        const menu = document.getElementById('controls-container');
+        btn.addEventListener('click', () => {
+            menu.classList.add(collapse);
+        })
+    </script>
+
+</body>
+
+</html>

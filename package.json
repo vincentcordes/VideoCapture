@@ -1,0 +1,22 @@
+{
+  "name": "videocapture",
+  "version": "1.0.0",
+  "description": "app to capture screen video",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vincentcordes/VideoCapture.git"
+  },
+  "author": "vmc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vincentcordes/VideoCapture/issues"
+  },
+  "homepage": "https://github.com/vincentcordes/VideoCapture#readme",
+  "devDependencies": {
+    "electron": "^13.1.7"
+  }
+}
