@@ -3,38 +3,55 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Video Capture</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/popup.css">
+    <script defer src="js/styling.js"></script>
+    <script defer src="js/script.js"></script>
 </head>
 
 <body>
-    <div class="main-container">
-        <div class="box">
-            <!-- <video src=""> -->
-        </div>
-        <div class="controls-container  " id="controls-container">
-            <button class="button-show-hide">Hide</button>
-            <button class="button-select " id="btn1">Select Window</button>
-            <button class="button-start " id="button-start">Record</button>
-            <button class="button-stop " id="button-stop">Stop</button>
+    <div class="popup-container">
+        <span class="popuptext" style="height: 100px;" id="popup">
+            <div>
+                A Simple Popup!
+            </div>
+            <div>
+                another bit of text
+            </div>
+        </span>
+    </div>
 
-            <button class="button-stop ">Other Stuff</button>
-            <button class="button-stop ">Other Stuff</button>
-            <button class="button-stop ">Popup Window</button>
+    <div class="container">
+        <div class="circle-container">
+            <div class="circle">
+                <button id="close">
+                    <svg width="32" height="32">
+                        <line x1="2" y1="2" x2="30" y2="30" stroke="#ff8833" stroke-width="4"></line>
+                        <line x1="2" y1="30" x2="30" y2="2" stroke="#ff8833" stroke-width="4"></line>
+                    </svg>
+                </button>
+                <button id="open">
+                    <svg width="32" height="32">
+                        <line x1="0" y1="2" x2="32" y2="2" stroke="#11ff11" stroke-width="4"></line>
+                        <line x1="2" y1="11.25" x2="30" y2="11.25" stroke="#22fe22" stroke-width="4"></line>
+                        <line x1="2" y1="20.5" x2="30" y2="20.5" stroke="#33fd33" stroke-width="4"></line>
+                        <line x1="0" y1="30" x2="32" y2="30" stroke="#44fc44" stroke-width="4"></line>
+                    </svg>
+                </button>
+            </div>
         </div>
 
     </div>
-    <script>
-        const collapse = 'collapse-control-bar';
-        const btn = document.getElementById('btn1');
-        const menu = document.getElementById('controls-container');
-        btn.addEventListener('click', () => {
-            menu.classList.add(collapse);
-        })
-    </script>
 
+    <nav>
+        <ul>
+            <li id="select"><i class="fas fa-home"></i>Select</li>
+            <li id="record"><i class="fas fa-user-alt"></i>Record</li>
+            <li><i class="fas fa-envelope"></i>Stop</li>
+        </ul>
+    </nav>
 </body>
 
 </html>

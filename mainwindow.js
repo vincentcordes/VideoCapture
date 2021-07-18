@@ -1,25 +1,30 @@
 const { BrowserWindow } = require('electron');
+const path = require('path');
 
 class MainWindow extends BrowserWindow {
     constructor(file, isDev) {
         super({
             title: 'Video Capture',
-            width: 1200, //isDev ? 800 : 355,
-            height: 500,
-            //icon: './assets/icons/icon.png',
+            width: 800, //isDev ? 800 : 355,
+            height: 600,
+            minHeight: 500,
+            icon: './assets/icons/camera_32.png',
             //resizable: isDev ? true : false,
             show: true,
             opacity: 1,
             //opacity: 0.8,
             webPreferences: {
+                //preload: path.join(__dirname, 'preload.js'),
                 nodeIntegration: true,
+                contextIsolation: false,
             },
         });
+
         this.loadFile(file);
 
-        // if (isDev) {
-        //     this.webContents.openDevTools();
-        // }
+        if (isDev) {
+            this.webContents.openDevTools();
+        }
     }
 }
 
