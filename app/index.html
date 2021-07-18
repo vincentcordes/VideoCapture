@@ -7,19 +7,19 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/popup.css">
-    <script defer src="js/styling.js"></script>
+    <script defer src="js/menuVisibility.js"></script>
     <script defer src="js/script.js"></script>
 </head>
 
 <body>
     <div class="popup-container">
-        <span class="popuptext" style="height: 100px;" id="popup">
-            <div>
+        <span class="popuptext" id="popup">
+            <!-- <div>
                 A Simple Popup!
             </div>
             <div>
                 another bit of text
-            </div>
+            </div> -->
         </span>
     </div>
 
@@ -47,9 +47,10 @@
 
     <nav>
         <ul>
-            <li id="select"><i class="fas fa-home"></i>Select</li>
-            <li id="record"><i class="fas fa-user-alt"></i>Record</li>
-            <li><i class="fas fa-envelope"></i>Stop</li>
+            <li class="select" id="select"><i></i>Select</li>
+            <li class="record" id="record"><i></i>Record</li>
+            <li class="stop" id="stop"><i></i>Stop</li>
+            <li class="help" id="help"><i></i>Help</li>
         </ul>
     </nav>
 </body>

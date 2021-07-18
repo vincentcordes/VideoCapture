@@ -1,6 +1,6 @@
 
 body{ 
-    font-family: 'Lato', sans-serif;
+    font-family: sans-serif;
     background-color: #333;
     color: #222;
     overflow-x: hidden;
@@ -9,10 +9,12 @@ body{
     text-align: center;
     justify-content: center;
 }
+
 video{
     height: 100vh;
     z-index: -1;
 }
+
 .container{
     background-color: #f3f1f1;
     transform-origin: top left;
@@ -59,6 +61,7 @@ video{
     font-size: 26px;
     color: white;
 }
+
 .circle button:focus{
     outline: none;
 }
@@ -67,12 +70,14 @@ video{
     left: 60%;
     
 }
+
 .circle button#close{
     top: 60%;
     transform: rotate(90deg);
     transform-origin: top left;
 }
 
+/* nav (menu) positioning */
 .container.show-nav + nav li{
     transform: translateX(0);
     transition-delay: 0.3s;
@@ -82,67 +87,56 @@ nav{
     position: fixed;
     bottom: 40px;
     left: 0;
-    z-index: 100;
+    z-index: 1;
 }
 
 nav ul{
     list-style: none;
-    padding-left: 30;
-    
+    padding-left: 15px;
+    user-select: none;
 }
 
 nav ul li{
     text-transform: uppercase;
     color: white;
     margin: 40px 0;
-    transform: translateX(-130%);
+    transform: translateX(-200%);
     transition: transform 0.4s ease-in;
 }
 
 nav ul li + li{
-    margin-left: 15px;
-    transform: translateX(-180%);
+    /* margin-left: 10px; */
+    transform: translateX(-250%);
 }
 
 nav ul li + li + li{
-    margin-left: 30px;
-    transform: translateX(-230%);
-
+    /* margin-left: 10px; */
+    transform: translateX(-300%);
 }
+
+nav ul li + li + li + li{
+    /* margin-left: 10px; */
+    transform: translateX(-350%);
+}
+
 nav ul li i{
     font-size: 20px;
     margin-right: 10px;
 }
 
+/* set hover effects */
 nav ul li:hover{
-    color: red;
+    cursor: pointer;
 }
-
-/* .content img{
-    max-width: 100%;
+.select:hover{
+    color:rgb(0, 119, 255);
 }
-.content{
-    max-width: 1000px;
-    margin: 50px auto;
+.record:hover{
+    color: rgb(0, 255, 55);;
 }
-
-.content h1{
-    margin: 0;
+.stop:hover{
+    color: rgb(255, 55, 0);
 }
-
-.content small{
-    color: #555;
-    font-style: italic;
+.help:hover{
+    color: rgb(255, 230, 0);
 }
-
-.content p{
-    color: #333;
-    line-height: 1.5;
-} */
-
-/* media small window height.*/
-@media screen and (max-height: 600px) {
-    .container.show-nav{
-        transform: rotate(-30deg);
-    }
-  }
