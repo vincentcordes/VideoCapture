@@ -58,6 +58,10 @@
     z-index: 11;
   }
 
+
+.sourceCard{
+  margin: 10px;
+} 
   /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
     from {opacity: 0;} 

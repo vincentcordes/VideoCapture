@@ -7,22 +7,17 @@ let media;
 const popup = document.getElementById('popup');
 const select = document.getElementById('select');
 select.addEventListener('click', () => selectMediaStream());
-const imgStringPrefix = 'data:image/Bmp;base64,';
 
 function addMediaSourceToDocument(sources) {
     sources.map(source => {
         //console.log(source);
         let div = document.createElement('div');
         div.classList.add('sourceCard');
-
         let p = document.createElement('p');
         let text = document.createTextNode(source.name);
         p.appendChild(text);
-
-        p.app
         let img = document.createElement('img');
         img.src = source.thumbnail.toDataURL();
-        //console.log(img.src);
         div.appendChild(p);
         div.appendChild(img);
         popup.appendChild(div);
