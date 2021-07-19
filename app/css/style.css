@@ -87,7 +87,7 @@ nav{
     position: fixed;
     bottom: 40px;
     left: 0;
-    z-index: 1;
+    z-index: 11;
 }
 
 nav ul{
@@ -110,12 +110,10 @@ nav ul li + li{
 }
 
 nav ul li + li + li{
-    /* margin-left: 10px; */
     transform: translateX(-300%);
 }
 
 nav ul li + li + li + li{
-    /* margin-left: 10px; */
     transform: translateX(-350%);
 }
 
