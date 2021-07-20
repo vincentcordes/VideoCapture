@@ -20,6 +20,7 @@
     -ms-user-select: none;
     user-select: none;
     z-index: 5;
+    justify-content: center;
 }
 .popup-header{  
   right: 0;
@@ -34,9 +35,9 @@
     right: 0;
     left: 0;
     padding: 10px 30px; 
+    flex-direction: row;
     align-content: center;
-    align-items:baseline;
-  
+    align-items: flex-start; 
 }
 
 /* Toggle this class - hide and show the popup */
