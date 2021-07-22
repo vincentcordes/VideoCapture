@@ -1,11 +1,14 @@
 
-/* Popup container - can be anything you want */
-.popup-container-base{
+/* Popup container */
+.popup-container{
     position: fixed;
     display: flex;
-    margin-left: 5%;
-    margin-right: 5%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
     height: 80%;
+    z-index: 5;
     background-color:rgba(255, 255, 255, .1);
     box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .1);
     color: rgb(231, 42, 42);
@@ -14,30 +17,36 @@
     top: 10%;
     left: 0;
     right: 0;
+    margin-left: 5%;
+    margin-right: 5%;
 
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;
-    z-index: 5;
-    justify-content: center;
-}
-.popup-header{  
-  right: 0;
-  left: 0;
-  display: inline;
-  justify-content: space-between;
-  z-index: 5; 
+    user-select: none;  
 }
 
-.popup-items{
-    z-index: 5;
-    right: 0;
-    left: 0;
-    padding: 10px 30px; 
-    flex-direction: row;
-    align-content: center;
-    align-items: flex-start; 
+/* popup items (Cards) */
+.popup-item{
+  min-width: 250px;
+  min-height: 250px;
+  max-width: 250px;
+  max-height: 250px;
+  margin: 10px;
+  cursor: pointer;
+  color: white;
+  border-radius: 10px;
+  background-color:rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  
+}
+
+.popup-item:hover{
+  filter: brightness(110%);
+  background-color: rgba(0, 0, 0, 0.40);
 }
 
 /* Toggle this class - hide and show the popup */
@@ -56,23 +65,7 @@ img{
   border-radius: 10px;
 }
 
-.sourceCard{
-  display: inline-block;
-  max-width: 150px;
-  max-height: 150px;
-  min-width: 150px;
-  min-height: 150px;
-  margin: 10px;
-  cursor: pointer;
-  color: white;
-  border-radius: 10px;
-  background-color:rgba(0, 0, 0, 0.5);
-  z-index: 5; 
-}
-.sourceCard:hover{
-  filter: brightness(110%);
-  background-color: rgba(0, 0, 0, 0.40);
-}
+
 
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {

@@ -4,10 +4,9 @@ const videoElement = document.getElementById('video');
 let media;
 
 // Select functionality
-const popupBase = document.getElementById('popup-container-base');
-const popupItems = document.getElementById('popup-items');
+const popupContainer = document.getElementById('popup-container');
 const select = document.getElementById('select');
-select.addEventListener('click', () => openMediaSources());
+select.addEventListener('click', () => getMediaSources());
 
 function stripNameLength(name) {
     let newName = '';
@@ -29,12 +28,12 @@ const removeChildren = (parent) => {
     }
 };
 
-function addMediaSourceToDocument(sources) {
-    removeChildren(popupItems);
+function addMediaSourcesToDocument(sources) {
+    removeChildren(popupContainer);
     sources.map(source => {
         // card for source info to sit in
         let div = document.createElement('div');
-        div.classList.add('sourceCard');
+        div.classList.add('popup-item');
 
         // make card title
         let p = document.createElement('p');
@@ -51,13 +50,14 @@ function addMediaSourceToDocument(sources) {
         // add click event 
         div.addEventListener('click', () => { selectMediaStream(source); });
 
-        popupItems.appendChild(div);
+        popupContainer.appendChild(div);
     });
 }
-
-async function openMediaSources() {
+// Still need to fix this to play media
+//http://imfly.github.io/electron-docs-gitbook/en/api/desktop-capturer.html
+async function getMediaSources() {
     try {
-        if (popupBase.classList.contains('hide')) {
+        if (popupContainer.classList.contains('hide')) {
             const inputSources = await desktopCapturer.getSources({
                 types: ['window', 'screen'],
                 thumbnailSize: {
@@ -65,14 +65,14 @@ async function openMediaSources() {
                     height: 150,
                 }
             });
-            addMediaSourceToDocument(inputSources);
+            addMediaSourcesToDocument(inputSources);
 
-            popupBase.classList.remove('hide');
-            popupBase.classList.add('show');
+            popupContainer.classList.remove('hide');
+            popupContainer.classList.add('show');
         }
         else {
-            popupBase.classList.remove('show');
-            popupBase.classList.add('hide');
+            popupContainer.classList.remove('show');
+            popupContainer.classList.add('hide');
         }
     } catch (error) {
         console.log(error);
@@ -92,12 +92,18 @@ async function selectMediaStream(source) {
         };
 
         // Create a Stream
-        const stream = await navigator.mediaDevices
-            .getUserMedia(constraints); // why for stream null??
+        // const stream = await navigator.mediaDevices
+        //     .getUserMedia(constraints); // why for stream null??
+
+        await navigator.webkitGetUserMedia(constraints,
+            (stream) => {
+                videoElement.srcObject = stream;
+                videoElement.play();
+            }, () => console.log(error));
 
         // Preview the source in a video element
-        videoElement.srcObject = stream;
-        videoElement.play();
+        // videoElement.srcObject = stream;
+        // videoElement.play();
 
     } catch (error) {
         console.log(error);
