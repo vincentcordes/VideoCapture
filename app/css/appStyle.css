@@ -1,0 +1,53 @@
+
+body{ 
+    font-family: sans-serif;
+    background-color: #333;
+    color: #222;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0;
+    text-align: center;
+    justify-content: center;
+}
+
+video{
+    height: 100vh;
+    z-index: -1;
+}
+
+.container{
+    background-color: #f3f1f1;
+    transform-origin: top left;
+    transition: transform 0.4s linear;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+.container.show-nav{
+    z-index: -1;
+    transform: rotate(-20deg);
+}
+
+/* Toggle this class - hide and show the popup */
+.show {
+    visibility: visible;
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn 0.5s;
+    z-index: 5;
+  }
+
+.hide {
+  visibility: hidden;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;} 
+    to {opacity: 1;}
+  }
+    
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }

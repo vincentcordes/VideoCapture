@@ -5,19 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/popup.css">
+    <link rel="stylesheet" href="./css/appStyle.css">
+    <link rel="stylesheet" href="./css/navStyle.css">
+    <link rel="stylesheet" href="./css/circleStyle.css">
+    <link rel="stylesheet" href="./css/popupStyle.css">
     <script defer src="js/menuVisibility.js"></script>
     <script defer src="js/script.js"></script>
 </head>
 
 <body>
-    <div class="popup-container hide" id="popup-container">
+    <!-- Popup container -->
+    <!-- Media sources are added to this -->
+    <div class="popup-container hide" id="popup-container"></div>
 
-    </div>
-
+    <!-- Video and menu open/close Container -->
     <div class="container">
-        <div class="circle-container">
+        <video id="video" class="hide"></video>
+        <div class=" circle-container">
             <div class="circle">
                 <button id="close">
                     <svg width="32" height="32">
@@ -38,6 +42,7 @@
 
     </div>
 
+    <!-- menu -->
     <nav>
         <ul>
             <li class="select" id="select"><i></i>Select</li>

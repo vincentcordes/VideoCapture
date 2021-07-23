@@ -1,3 +1,4 @@
+"use strict";
 const { desktopCapturer, remote } = require('electron');
 const videoElement = document.getElementById('video');
 
@@ -26,9 +27,9 @@ const removeChildren = (parent) => {
     while (parent.lastChild) {
         parent.removeChild(parent.lastChild);
     }
-};
+}
 
-function addMediaSourcesToDocument(sources) {
+async function addMediaSourcesToDocument(sources) {
     removeChildren(popupContainer);
     sources.map(source => {
         // card for source info to sit in
@@ -48,13 +49,12 @@ function addMediaSourcesToDocument(sources) {
         div.appendChild(p);
         div.appendChild(img);
         // add click event 
-        div.addEventListener('click', () => { selectMediaStream(source); });
+        div.addEventListener('click', async () => { await selectMediaStream(source); });
 
         popupContainer.appendChild(div);
     });
 }
-// Still need to fix this to play media
-//http://imfly.github.io/electron-docs-gitbook/en/api/desktop-capturer.html
+
 async function getMediaSources() {
     try {
         if (popupContainer.classList.contains('hide')) {
@@ -81,33 +81,42 @@ async function getMediaSources() {
 
 async function selectMediaStream(source) {
     try {
+        console.log(source);
         const constraints = {
             audio: false,
             video: {
                 mandatory: {
                     chromeMediaSource: 'desktop',
                     chromeMediaSourceId: source.id,
+                    // minWidth: 1280,
+                    // maxWidth: 1280,
+                    // minHeight: 720,
+                    // maxHeight: 720
                 }
             }
         };
 
         // Create a Stream
-        // const stream = await navigator.mediaDevices
-        //     .getUserMedia(constraints); // why for stream null??
-
-        await navigator.webkitGetUserMedia(constraints,
-            (stream) => {
-                videoElement.srcObject = stream;
+        await navigator.webkitGetUserMedia(constraints, (stream) => {
+            console.log(stream);
+            // set and play stream
+            videoElement.srcObject = stream;
+            videoElement.onloadedmetadata = () => {
                 videoElement.play();
-            }, () => console.log(error));
-
-        // Preview the source in a video element
-        // videoElement.srcObject = stream;
-        // videoElement.play();
+                showPlayer();
+            }
+        }, () => console.log("media error"));
 
     } catch (error) {
         console.log(error);
     }
+}
+
+function showPlayer() {
+    videoElement.classList.remove('hide');
+    videoElement.classList.add('show');
+    popupContainer.classList.remove('show');
+    popupContainer.classList.add('hide');
 }
 
 // Record functionality
@@ -122,4 +131,4 @@ stop.addEventListener('click', () => { console.log('stop clicked') });
 
 // Help functionality
 const help = document.getElementById('help')
-help.addEventListener('click', () => { console.log('help clicked') });
+help.addEventListener('click', () => { console.log('help clicked'); });

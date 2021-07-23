@@ -1,0 +1,61 @@
+/* nav (menu) positioning */
+.container.show-nav + nav li{
+    transform: translateX(0);
+    transition-delay: 0.3s;
+}
+
+nav{
+    position: fixed;
+    bottom: 40px;
+    left: 0;
+    z-index: 11;
+}
+
+nav ul{
+    list-style: none;
+    padding-left: 15px;
+    user-select: none;
+}
+
+nav ul li{
+    text-transform: uppercase;
+    color: white;
+    margin: 40px 0;
+    transform: translateX(-200%);
+    transition: transform 0.4s ease-in;
+}
+
+nav ul li + li{
+    /* margin-left: 10px; */
+    transform: translateX(-250%);
+}
+
+nav ul li + li + li{
+    transform: translateX(-300%);
+}
+
+nav ul li + li + li + li{
+    transform: translateX(-350%);
+}
+
+nav ul li i{
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+/* set hover effects */
+nav ul li:hover{
+    cursor: pointer;
+}
+.select:hover{
+    color:rgb(0, 119, 255);
+}
+.record:hover{
+    color: rgb(0, 255, 55);;
+}
+.stop:hover{
+    color: rgb(255, 55, 0);
+}
+.help:hover{
+    color: rgb(255, 230, 0);
+}
