@@ -8,7 +8,7 @@ class MainWindow extends BrowserWindow {
             width: 800, //isDev ? 800 : 355,
             height: 600,
             minHeight: 500,
-            icon: './assets/icons/icon_32_test.png',
+            icon: './assets/icons/app_icon4.png',
             //resizable: isDev ? true : false,
             show: true,
             opacity: 1,
