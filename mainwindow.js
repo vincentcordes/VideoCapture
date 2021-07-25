@@ -14,9 +14,13 @@ class MainWindow extends BrowserWindow {
             opacity: 1,
             //opacity: 0.8,
             webPreferences: {
-                //preload: path.join(__dirname, 'preload.js'),
-                nodeIntegration: true,
-                contextIsolation: false,
+                preload: path.join(__dirname, 'preload.js'),
+                nodeIntegration: false,
+                contextIsolation: true,
+                enableRemoteModule: false,
+                // nodeIntegration: false,
+                // contextIsolation: true,
+                // enableRemoteModule: false,
             },
         });
 

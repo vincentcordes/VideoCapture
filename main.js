@@ -1,6 +1,10 @@
-const { app, Menu } = require('electron');
+const { app, Menu, ipcMain, desktopCapturer, dialog } = require('electron');
+const { writeFile } = require('fs')
+// const { dialog } = remote;
 const MainWindow = require('./MainWindow');
+const { Buffer } = require('buffer');
 
+//const { Blob } = require('electron');
 
 // Set env
 process.env.NODE_ENV = 'dev'
@@ -27,4 +31,45 @@ app.on('ready', () => {
 
     });
 })
+
 app.allowRendererProcessReuse = true
+
+
+ipcMain.on('sources:request', async (event, data) => {
+    const sources = await desktopCapturer.getSources({
+        types: ['window', 'screen'],
+        thumbnailSize: {
+            width: 150,
+            height: 150,
+        }
+    });
+
+    let newSources = sources.map(s => {
+        return {
+            name: s.name,
+            image: s.thumbnail.toDataURL(), // it is necessary to call toDataURL in main
+            id: s.id,
+        }
+    });
+
+    // Send media sources back
+    mainWindow.webContents.send('sources:response', newSources)
+});
+
+ipcMain.on('savevideo:request', async (event, blob) => {
+    // const blob = new Blob(recordedChunks, {
+    //     type: 'video/webm; codecs=vp9'
+    // });
+
+    // const buffer = Buffer.from(await blob.arrayBuffer());
+    const buffer = Buffer.from(blob);
+
+    const { filePath } = await dialog.showSaveDialog({
+        buttonLabel: 'Save video',
+        defaultPath: `vid-${Date.now()}.webm`
+    });
+
+    if (filePath) {
+        writeFile(filePath, buffer, () => console.log('video saved successfully!'));
+    }
+});

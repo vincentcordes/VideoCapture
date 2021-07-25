@@ -1,13 +1,30 @@
 "use strict";
-const { desktopCapturer, remote } = require('electron');
+
+//const { desktopCapturer, remote } = require('electron');
 const videoElement = document.getElementById('video');
-
-let media;
-
-// Select functionality
 const popupContainer = document.getElementById('popup-container');
+
+// select stream functionality
 const select = document.getElementById('select');
 select.addEventListener('click', () => getMediaSources());
+
+async function getMediaSources() {
+    try {
+        if (popupContainer.classList.contains('hide')) {
+            // Send request for sources to main process
+            await api.send('sources:request');
+
+            popupContainer.classList.remove('hide');
+            popupContainer.classList.add('show');
+        }
+        else {
+            popupContainer.classList.remove('show');
+            popupContainer.classList.add('hide');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 function stripNameLength(name) {
     let newName = '';
@@ -29,9 +46,13 @@ const removeChildren = (parent) => {
     }
 }
 
+window.api.receive("sources:response", (sources) => {
+    addMediaSourcesToDocument(sources);
+});
+
 async function addMediaSourcesToDocument(sources) {
     removeChildren(popupContainer);
-    sources.map(source => {
+    await sources.map(async (source) => {
         // card for source info to sit in
         let div = document.createElement('div');
         div.classList.add('popup-item');
@@ -43,55 +64,28 @@ async function addMediaSourcesToDocument(sources) {
 
         // card image
         let img = document.createElement('img');
-        img.src = source.thumbnail.toDataURL();
+        img.src = source.image;
 
         // put it together in order
         div.appendChild(p);
         div.appendChild(img);
         // add click event 
-        div.addEventListener('click', async () => { await selectMediaStream(source); });
+        div.addEventListener('click', async () => {
+            await selectMediaStream(source.id);
+        });
 
         popupContainer.appendChild(div);
     });
 }
 
-async function getMediaSources() {
+async function selectMediaStream(id) {
     try {
-        if (popupContainer.classList.contains('hide')) {
-            const inputSources = await desktopCapturer.getSources({
-                types: ['window', 'screen'],
-                thumbnailSize: {
-                    width: 150,
-                    height: 150,
-                }
-            });
-            addMediaSourcesToDocument(inputSources);
-
-            popupContainer.classList.remove('hide');
-            popupContainer.classList.add('show');
-        }
-        else {
-            popupContainer.classList.remove('show');
-            popupContainer.classList.add('hide');
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-async function selectMediaStream(source) {
-    try {
-        console.log(source);
         const constraints = {
             audio: false,
             video: {
                 mandatory: {
                     chromeMediaSource: 'desktop',
-                    chromeMediaSourceId: source.id,
-                    // minWidth: 1280,
-                    // maxWidth: 1280,
-                    // minHeight: 720,
-                    // maxHeight: 720
+                    chromeMediaSourceId: id,
                 }
             }
         };
@@ -104,6 +98,9 @@ async function selectMediaStream(source) {
             videoElement.onloadedmetadata = () => {
                 videoElement.play();
                 showPlayer();
+                // init the mediaRecorder
+                // no need to keep a global reference to stream
+                initMediaRecorder(stream);
             }
         }, () => console.log("media error"));
 
@@ -121,13 +118,53 @@ function showPlayer() {
 
 // Record functionality
 const record = document.getElementById('record');
-record.addEventListener('click', () => console.log('record clicked'));
+record.addEventListener('click', () => {
+    console.log('record clicked');
+    console.log(mediaRecorder);
+    if (mediaRecorder !== undefined)
+        mediaRecorder.start();
+});
+
 const recordedChunks = [];
+let mediaRecorder;
+
+function initMediaRecorder(stream) {
+    // Create the Media Recorder
+    const options = { mimeType: 'video/webm; codecs=vp9' };
+    mediaRecorder = new MediaRecorder(stream, options);
+
+    // Register Event Handlers
+    mediaRecorder.ondataavailable = handleDataAvailable;
+    mediaRecorder.onstop = handleStop;
+}
+
+// Captures all recorded chunks
+function handleDataAvailable(e) {
+    console.log('video data available');
+    recordedChunks.push(e.data);
+}
+
 
 
 // Stop functionality
 const stop = document.getElementById('stop');
-stop.addEventListener('click', () => { console.log('stop clicked') });
+stop.addEventListener('click', () => {
+    console.log('stop clicked');
+    if (mediaRecorder !== undefined)
+        mediaRecorder.stop();
+});
+
+// Saves the video file on stop
+async function handleStop(e) {
+    const blob = new Blob(recordedChunks, {
+        type: 'video/webm; codecs=vp9'
+    });
+
+    const blobArrayBuffer = await blob.arrayBuffer()
+    // const buffer = Buffer.from(await blob.arrayBuffer());
+    await api.send('savevideo:request', blobArrayBuffer);
+
+}
 
 // Help functionality
 const help = document.getElementById('help')
