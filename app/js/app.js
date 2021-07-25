@@ -80,8 +80,22 @@ async function addMediaSourcesToDocument(sources) {
 
 async function selectMediaStream(id) {
     try {
+        // video only
+        // const constraints = {
+        //     audio: false,
+        //     video: {
+        //         mandatory: {
+        //             chromeMediaSource: 'desktop',
+        //             chromeMediaSourceId: id,
+        //         }
+        //     }
+        // };
         const constraints = {
-            audio: false,
+            audio: {
+                mandatory: {
+                    chromeMediaSource: 'desktop'
+                }
+            },
             video: {
                 mandatory: {
                     chromeMediaSource: 'desktop',
@@ -89,7 +103,6 @@ async function selectMediaStream(id) {
                 }
             }
         };
-
         // Create a Stream
         await navigator.webkitGetUserMedia(constraints, (stream) => {
             console.log(stream);
