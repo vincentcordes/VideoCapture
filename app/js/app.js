@@ -1,15 +1,15 @@
 "use strict";
 
-//const { desktopCapturer, remote } = require('electron');
 const videoElement = document.getElementById('video');
 const popupContainer = document.getElementById('popup-container');
 
 // select stream functionality
 const select = document.getElementById('select');
-select.addEventListener('click', () => getMediaSources());
+select.addEventListener('click', getMediaSources);
 
 async function getMediaSources() {
     try {
+
         if (popupContainer.classList.contains('hide')) {
             // Send request for sources to main process
             await api.send('sources:request');
@@ -93,16 +93,20 @@ async function selectMediaStream(id) {
         // Create a Stream
         await navigator.webkitGetUserMedia(constraints, (stream) => {
             console.log(stream);
-            // set and play stream
+            // Set and play stream
             videoElement.srcObject = stream;
             videoElement.onloadedmetadata = () => {
                 videoElement.play();
                 showPlayer();
-                // init the mediaRecorder
-                // no need to keep a global reference to stream
+                // Init the mediaRecorder
+                // No need to keep a global reference to stream
                 initMediaRecorder(stream);
             }
         }, () => console.log("media error"));
+
+        // Enable record button
+        record.addEventListener('click', startRecord);
+        record.classList.remove('disable');
 
     } catch (error) {
         console.log(error);
@@ -118,17 +122,34 @@ function showPlayer() {
 
 // Record functionality
 const record = document.getElementById('record');
-record.addEventListener('click', () => {
-    console.log('record clicked');
+record.addEventListener('click', startRecord);
+
+function startRecord() {
+    // Disable select button
+    select.removeEventListener('click', getMediaSources);
+    select.classList.add('disable');
+
+    // Disable record button
+    record.removeEventListener('click', startRecord)
+    record.classList.add('disable');
+
+    // Enable stop button
+    stop.addEventListener('click', stopRecord);
+    stop.classList.remove('disable');
+
     console.log(mediaRecorder);
     if (mediaRecorder !== undefined)
         mediaRecorder.start();
-});
+}
 
-const recordedChunks = [];
+
+let recordedChunks = [];
 let mediaRecorder;
 
 function initMediaRecorder(stream) {
+    // Reset previously recorded chunks
+    recordedChunks = [];
+
     // Create the Media Recorder
     const options = { mimeType: 'video/webm; codecs=vp9' };
     mediaRecorder = new MediaRecorder(stream, options);
@@ -144,26 +165,32 @@ function handleDataAvailable(e) {
     recordedChunks.push(e.data);
 }
 
-
-
 // Stop functionality
 const stop = document.getElementById('stop');
-stop.addEventListener('click', () => {
-    console.log('stop clicked');
+
+function stopRecord() {
+    // Disable stop button
+    stop.removeEventListener('click', stopRecord)
+    stop.classList.add('disable');
+
+    // Enable select button
+    select.addEventListener('click', getMediaSources);
+    select.classList.remove('disable');
+
     if (mediaRecorder !== undefined)
         mediaRecorder.stop();
-});
+}
 
 // Saves the video file on stop
 async function handleStop(e) {
+    // Seems silly but I can't figure out how to get access to 'Blob' in the main process
+    console.log('handle stop');
     const blob = new Blob(recordedChunks, {
         type: 'video/webm; codecs=vp9'
     });
 
     const blobArrayBuffer = await blob.arrayBuffer()
-    // const buffer = Buffer.from(await blob.arrayBuffer());
     await api.send('savevideo:request', blobArrayBuffer);
-
 }
 
 // Help functionality

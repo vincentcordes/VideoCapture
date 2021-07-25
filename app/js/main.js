@@ -1,13 +1,10 @@
 const { app, Menu, ipcMain, desktopCapturer, dialog } = require('electron');
 const { writeFile } = require('fs')
-// const { dialog } = remote;
-const MainWindow = require('./MainWindow');
+const MainWindow = require('./mainwindow');
 const { Buffer } = require('buffer');
 
-//const { Blob } = require('electron');
-
 // Set env
-process.env.NODE_ENV = 'dev'
+process.env.NODE_ENV = 'production'
 
 const isDev = process.env.NODE_ENV !== 'production' ? true : false
 const isMac = process.platform === 'darwin' ? true : false
@@ -34,7 +31,6 @@ app.on('ready', () => {
 
 app.allowRendererProcessReuse = true
 
-
 ipcMain.on('sources:request', async (event, data) => {
     const sources = await desktopCapturer.getSources({
         types: ['window', 'screen'],
@@ -56,13 +52,9 @@ ipcMain.on('sources:request', async (event, data) => {
     mainWindow.webContents.send('sources:response', newSources)
 });
 
-ipcMain.on('savevideo:request', async (event, blob) => {
-    // const blob = new Blob(recordedChunks, {
-    //     type: 'video/webm; codecs=vp9'
-    // });
+ipcMain.on('savevideo:request', async (event, blobArray) => {
 
-    // const buffer = Buffer.from(await blob.arrayBuffer());
-    const buffer = Buffer.from(blob);
+    const buffer = Buffer.from(blobArray);
 
     const { filePath } = await dialog.showSaveDialog({
         buttonLabel: 'Save video',
@@ -70,6 +62,6 @@ ipcMain.on('savevideo:request', async (event, blob) => {
     });
 
     if (filePath) {
-        writeFile(filePath, buffer, () => console.log('video saved successfully!'));
+        writeFile(filePath, buffer, () => { console.log('video saved successfully!') });
     }
 });
